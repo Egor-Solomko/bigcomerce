@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Items</title>
+    <link rel="icon" type="image/png" href="static\gts-black_1.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px; /* Отступ сверху */
+        }
+
+        #logo {
+            margin-bottom: 30px; /* Отступ снизу */
+        }
+
+        #getMotorButton {
+            background-color: #008CBA; /* Новый цвет кнопки */
+            border: none;
+            color: white;
+            padding: 15px 25px; /* Уменьшаем горизонтальный отступ */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px; /* Отступ сверху */
+            cursor: pointer;
+            border-radius: 50px; /* Заокругляем края для создания эффекта круглой кнопки */
+        }
+
+        #output {
+            margin-top: 30px; /* Отступ сверху */
+            text-align: center; /* Центрирование текста */
+        }
+    </style>
+</head>
+<body>
+    <div id="logo">
+        <img src="static\logo.webp" alt="Logo" width="200" height="auto">
+    </div>
+    <button id="getMotorButton">Add New Items</button>
+    <div id="output"></div>
+
+    <script>
+        $(document).ready(function() {
+            $("#getMotorButton").click(function() {
+                // Изменяем текст кнопки на "Loading..." при нажатии на неё
+                $(this).text("Loading...");
+        
+                $.ajax({
+                    url: "/get_all_motor",
+                    type: "GET",
+                    success: function(response) {
+                        var outputHtml = '';
+                        // Проходим по каждому элементу списка и создаем HTML-разметку для него
+                        response.forEach(function(item) {
+                            outputHtml += "<p>" + item + "</p>"; // Создаем абзац для каждого элемента
+                        });
+                        $("#output").html(outputHtml); // Добавляем HTML в #output
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    },
+                    complete: function() {
+                        // После завершения запроса возвращаем исходный текст кнопки
+                        $("#getMotorButton").text("Add New Items");
+                    }
+                });
+            });
+        });
+        
+    </script>
+</body>
+</html>
