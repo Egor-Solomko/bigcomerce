@@ -18,6 +18,7 @@ def get_all_motor():
     mistake_list = []
     try: 
         manufacture_response = requests.get(f"https://www.racechip.de/reseller_api/v3/manufacturer?apikey={api_key_racechip}")
+        print(1)
     except requests.exceptions.RequestException as e:
         mistake_list.append(f"Connection failed: {e}")
         return mistake_list
@@ -33,6 +34,7 @@ def get_all_motor():
     for id_model in manufacturers:
         try:
             models_responce = requests.get(f'https://www.racechip.de/reseller_api/v3/manufacturer/id/{id_model}?apikey={api_key_racechip}')
+            print(2)
         except requests.exceptions.RequestException as e:
             mistake_list.append(f"Connection with model ID failed: {e}")
             #return mistake_list
@@ -44,6 +46,7 @@ def get_all_motor():
             car_manufacturer_name[id] = models_data['car_manufacturer_name']
        
     motors_id = []
+    print(3)
     car_manufacturer_name1 = {}
     for engine_id in models_id:
         try:
@@ -113,7 +116,7 @@ def get_all_motor():
             Bigcommerce_Product_Name = f'{data["name"]} / {data["car_motor_name"]}'
             print("тут еще работаем3")  
             if data['details'] == True:
-                Bigcommerce_Product_Description = f'{data["name"]} - {data["car_short_name"]} <br\/>Performance Fuel : {data["performance_fuel"]}<br\/>Performance nm : {data["performance_nm"]}<br\/>Performance ps : {data["performance_ps"]}'
+                Bigcommerce_Product_Description = f'{data["name"]} - {data["car_short_name"]} <br>Performance Fuel : {data["performance_fuel"]}<br>Performance nm : {data["performance_nm"]}<br>Performance ps : {data["performance_ps"]}'
             else:
                 Bigcommerce_Product_Description = f'{data["name"]} - {data["car_short_name"]}'
 
@@ -131,7 +134,7 @@ def get_all_motor():
 
 
 
-
+            print(payload)
             request_co_create_product = requests.post(f'https://api.bigcommerce.com/stores/{hach}/v3/catalog/products', headers=header, json=payload)
 
 
@@ -143,3 +146,6 @@ def get_all_motor():
         return mistake_list
 
 
+
+if __name__ == '__main__':
+    get_all_motor()
